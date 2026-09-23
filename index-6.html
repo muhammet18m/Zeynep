@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seni Seviyorum Zeynep ❤️</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",Arial,sans-serif;overflow:hidden;min-height:100vh;background:#07111f;color:white}
+.screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:background 1.5s ease}
+#startScreen{background:radial-gradient(circle at 20% 20%,rgba(65,105,225,.16),transparent 35%),radial-gradient(circle at 80% 80%,rgba(0,180,255,.12),transparent 35%),#07111f}
+#quizScreen{display:none;background:radial-gradient(circle at 50% 40%,rgba(0,150,255,.08),transparent 45%),#07111f}
+#finalScreen{display:none;background:radial-gradient(circle at 50% 35%,rgba(255,60,130,.45),transparent 40%),linear-gradient(135deg,#420019,#a90042,#ff416c)}
+.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.particle{position:absolute;width:4px;height:4px;background:rgba(120,200,255,.45);border-radius:50%;animation:floatParticle linear infinite}
+@keyframes floatParticle{0%{transform:translateY(110vh) translateX(0);opacity:0}15%{opacity:.5}50%{transform:translateY(50vh) translateX(25px)}85%{opacity:.35}100%{transform:translateY(-10vh) translateX(-20px);opacity:0}}
+.start-card{position:relative;z-index:5;width:min(90%,560px);padding:45px 30px;text-align:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:28px;backdrop-filter:blur(18px);box-shadow:0 20px 70px rgba(0,0,0,.35),inset 0 0 30px rgba(255,255,255,.03);animation:cardIn 1s ease}
+@keyframes cardIn{from{opacity:0;transform:translateY(30px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.gift-big{font-size:65px;margin-bottom:20px;filter:drop-shadow(0 0 15px rgba(255,200,0,.3))}
+.start-card h1{font-size:clamp(25px,6vw,38px);margin-bottom:15px}
+.start-card p{color:#b9c9dd;font-size:16px;line-height:1.6;margin-bottom:30px}
+.ready-btn{border:none;padding:16px 42px;border-radius:50px;background:linear-gradient(135deg,#168cff,#0066ff);color:white;font-size:17px;font-weight:bold;cursor:pointer;box-shadow:0 10px 30px rgba(0,115,255,.35);transition:.3s}
+.ready-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 15px 35px rgba(0,115,255,.45),0 0 25px rgba(0,140,255,.25)}
+.ready-btn:active{transform:scale(.96)}
+.progress-area{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:8px;height:55vh;max-height:500px;background:rgba(255,255,255,.1);border-radius:20px;z-index:10}
+.progress-bar{position:absolute;left:0;bottom:0;width:100%;height:0%;border-radius:20px;background:linear-gradient(to top,#006eff,#28a9ff);box-shadow:0 0 15px rgba(0,140,255,.6);transition:height .7s cubic-bezier(.4,0,.2,1)}
+.progress-text{position:absolute;left:17px;top:-35px;width:80px;color:#62b9ff;font-size:13px;font-weight:bold}
+.quiz-wrapper{position:relative;z-index:5;width:min(90%,620px);text-align:center}
+.question-card{background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.13);border-radius:28px;padding:30px 25px 25px;backdrop-filter:blur(18px);box-shadow:0 25px 80px rgba(0,0,0,.3);animation:questionIn .55s ease}
+@keyframes questionIn{from{opacity:0;transform:translateX(25px) scale(.97)}to{opacity:1;transform:translateX(0) scale(1)}}
+.question-number{color:#54afff;font-size:14px;font-weight:bold;margin-bottom:14px;letter-spacing:1px}
+.question{font-size:clamp(22px,5vw,31px);font-weight:600;margin-bottom:25px;line-height:1.4}
+.answers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.answer{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:white;padding:15px 8px;border-radius:15px;cursor:pointer;font-size:16px;transition:.25s}
+.answer:hover{background:rgba(30,145,255,.2);border-color:rgba(70,175,255,.6);transform:translateY(-3px)}
+.answer.correct{background:rgba(40,220,110,.3);border-color:#42ff86;box-shadow:0 0 25px rgba(40,255,120,.4)}
+.answer.wrong{animation:shake .35s;background:rgba(255,50,70,.25);border-color:#ff5266}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.love-message{margin-top:22px;display:flex;align-items:center;justify-content:center;gap:10px;min-height:38px}
+.love-message .gift{font-size:25px}.syllables{display:flex;gap:5px}
+.syllable{width:48px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:transparent;transition:.5s ease}
+.syllable.unlocked{color:white;background:rgba(255,80,130,.2);border-color:rgba(255,100,150,.5);box-shadow:0 0 15px rgba(255,70,130,.2);animation:syllableIn .5s ease}
+@keyframes syllableIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.green-heart{position:fixed;bottom:-40px;font-size:24px;color:#45ff88;z-index:100;pointer-events:none;animation:heartUp 2.2s ease-out forwards;filter:drop-shadow(0 0 8px #2dff79)}
+@keyframes heartUp{0%{transform:translateY(0) scale(.5) rotate(0deg);opacity:0}15%{opacity:1}100%{transform:translateY(-110vh) translateX(var(--move)) scale(1.2) rotate(30deg);opacity:0}}
+.final-content{position:relative;z-index:20;text-align:center;padding:25px;animation:finalIn 1.5s ease}
+@keyframes finalIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.final-gift{font-size:70px;margin-bottom:15px;animation:giftPulse 1.4s infinite alternate}
+@keyframes giftPulse{from{transform:scale(1)}to{transform:scale(1.12)}}
+.final-small{font-size:17px;color:rgba(255,255,255,.85);margin-bottom:10px}
+.final-love{font-size:clamp(42px,11vw,82px);font-weight:900;letter-spacing:3px;background:linear-gradient(90deg,#fff,#ffd5e5,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 30px rgba(255,255,255,.4)}
+.zeynep{margin-top:10px;font-size:clamp(45px,12vw,90px);font-weight:900;color:white;text-shadow:0 0 10px #fff,0 0 25px #ff9cbd,0 0 50px #ff4f8a;animation:zeynepGlow 1.5s infinite alternate}
+@keyframes zeynepGlow{from{transform:scale(1)}to{transform:scale(1.06)}}
+.final-heart{position:fixed;bottom:-60px;z-index:10;pointer-events:none;font-size:var(--size);animation:finalHeartUp var(--duration) linear forwards}
+@keyframes finalHeartUp{0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:0}10%{opacity:.9}50%{transform:translateY(-50vh) translateX(var(--x)) rotate(25deg)}100%{transform:translateY(-115vh) translateX(calc(var(--x) * -1)) rotate(-30deg);opacity:0}}
+@media (max-width:600px){.progress-area{left:8px;width:6px;height:48vh}.progress-text{left:12px;font-size:11px}.question-card{padding:25px 16px 20px}.answers{gap:8px}.answer{padding:14px 5px}.syllable{width:39px;font-size:12px}.love-message{gap:6px}}
+</style>
+</head>
+<body>
+
+<section id="startScreen" class="screen">
+<div class="particles" id="startParticles"></div>
+<div class="start-card">
+<div class="gift-big">🎁</div>
+<h1>Ödüle ulaşmak için<br>soruları çözmen gerekli</h1>
+<p>6 küçük matematik sorusu seni bekliyor.<br>Hepsini doğru bilirsen sürpriz hediyene ulaşacaksın. ❤️</p>
+<button class="ready-btn" onclick="startQuiz()">HAZIRIM ✨</button>
+</div>
+</section>
+
+<section id="quizScreen" class="screen">
+<div class="particles" id="quizParticles"></div>
+<div class="progress-area">
+<div class="progress-bar" id="progressBar"></div>
+<div class="progress-text" id="progressText">0 / 6</div>
+</div>
+<div class="quiz-wrapper">
+<div class="question-card" id="questionCard">
+<div class="question-number" id="questionNumber">SORU 1 / 6</div>
+<div class="question" id="question">4 + 5 = ?</div>
+<div class="answers" id="answers"></div>
+<div class="love-message">
+<span class="gift">🎁</span>
+<div class="syllables">
+<div class="syllable" id="s0">SE</div>
+<div class="syllable" id="s1">Nİ</div>
+<div class="syllable" id="s2">SE</div>
+<div class="syllable" id="s3">Vİ</div>
+<div class="syllable" id="s4">YO</div>
+<div class="syllable" id="s5">RUM</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="finalScreen" class="screen">
+<div id="finalHearts"></div>
+<div class="final-content">
+<div class="final-gift">🎁</div>
+<div class="final-small"></div>
+<div class="final-love">SENİ SEVİYORUM</div>
+<div class="zeynep">ZEYNEP ❤️</div>
+</div>
+</section>
+
+<script>
+const questions=[
+{question:"7 + 5 = ?",answer:12,options:[12,10,14]},
+{question:"15 - 6 = ?",answer:9,options:[8,9,11]},
+{question:"8 + 9 = ?",answer:17,options:[16,18,17]},
+{question:"20 - 7 = ?",answer:13,options:[12,13,14]},
+{question:"6 + 8 = ?",answer:14,options:[13,15,14]},
+{question:"18 - 9 = ?",answer:9,options:[7,9,10]}
+];
+let currentQuestion=0;
+
+function createParticles(containerId,amount=45){
+const container=document.getElementById(containerId);
+for(let i=0;i<amount;i++){
+const particle=document.createElement("div");
+particle.className="particle";
+particle.style.left=Math.random()*100+"%";
+particle.style.animationDuration=(12+Math.random()*18)+"s";
+particle.style.animationDelay=(-Math.random()*20)+"s";
+particle.style.opacity=.2+Math.random()*.5;
+particle.style.transform=`scale(${.5+Math.random()})`;
+container.appendChild(particle);
+}}
+createParticles("startParticles",40);
+createParticles("quizParticles",55);
+
+function startQuiz(){
+document.getElementById("startScreen").style.display="none";
+document.getElementById("quizScreen").style.display="flex";
+currentQuestion=0;
+loadQuestion();
+}
+
+function loadQuestion(){
+const question=questions[currentQuestion];
+const card=document.getElementById("questionCard");
+card.style.animation="none";
+void card.offsetWidth;
+card.style.animation="questionIn .55s ease";
+document.getElementById("questionNumber").textContent=`SORU ${currentQuestion+1} / 6`;
+document.getElementById("question").textContent=question.question;
+document.getElementById("progressText").textContent=`${currentQuestion} / 6`;
+updateProgress();
+const answersContainer=document.getElementById("answers");
+answersContainer.innerHTML="";
+const shuffledOptions=[...question.options].sort(()=>Math.random()-.5);
+shuffledOptions.forEach(value=>{
+const button=document.createElement("button");
+button.className="answer";
+button.textContent=value;
+button.onclick=()=>checkAnswer(button,value);
+answersContainer.appendChild(button);
+});
+}
+
+function checkAnswer(button,selectedValue){
+const correctValue=questions[currentQuestion].answer;
+if(selectedValue===correctValue){
+button.classList.add("correct");
+createGreenHearts();
+document.getElementById("s"+currentQuestion).classList.add("unlocked");
+currentQuestion++;
+setTimeout(()=>{
+if(currentQuestion>=questions.length){showFinal();}
+else{loadQuestion();}
+},900);
+}else{
+button.classList.add("wrong");
+setTimeout(()=>{button.classList.remove("wrong")},400);
+}}
+
+function updateProgress(){
+const percentage=(currentQuestion/questions.length)*100;
+document.getElementById("progressBar").style.height=percentage+"%";
+}
+
+function createGreenHearts(){
+for(let i=0;i<18;i++){
+const heart=document.createElement("div");
+heart.className="green-heart";
+heart.textContent="♥";
+heart.style.left=(15+Math.random()*70)+"%";
+heart.style.fontSize=(16+Math.random()*25)+"px";
+heart.style.setProperty("--move",(-80+Math.random()*160)+"px");
+heart.style.animationDuration=(1.5+Math.random()*1.4)+"s";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),3200);
+}}
+
+function showFinal(){
+document.getElementById("quizScreen").style.display="none";
+document.getElementById("finalScreen").style.display="flex";
+createFinalHearts();
+}
+
+function createFinalHearts(){
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.className="final-heart";
+heart.textContent=Math.random()>.5?"♥":"❤";
+heart.style.left=Math.random()*100+"%";
+heart.style.setProperty("--size",(18+Math.random()*40)+"px");
+heart.style.setProperty("--duration",(5+Math.random()*6)+"s");
+heart.style.setProperty("--x",(-100+Math.random()*200)+"px");
+document.getElementById("finalHearts").appendChild(heart);
+setTimeout(()=>heart.remove(),12000);
+},250);
+}
+</script>
+</body>
+</html>
